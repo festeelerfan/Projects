@@ -8,10 +8,10 @@ def mc_euro(S: float, t: float, T: float, K: float, r: float, q: float, sigma: f
 
    call_payoffs = np.maximum(S_T-K, 0)
    call_mc = np.exp(-r*(T-t)) * np.mean(call_payoffs)
-   call_stderr = np.exp(-r*(T-t)) * np.std(call_payoffs) / np.sqrt(N)
+   call_se = np.exp(-r*(T-t)) * np.std(call_payoffs) / np.sqrt(N)
 
    put_payoffs = np.maximum(K-S_T,0)
    put_mc = np.exp(-r*(T-t)) * np.mean(put_payoffs)
-   put_stderr = np.exp(-r*(T-t)) * np.std(put_payoffs) / np.sqrt(N)
+   put_se = np.exp(-r*(T-t)) * np.std(put_payoffs) / np.sqrt(N)
 
-   return (call_mc, call_stderr, put_mc, put_stderr)
+   return (call_mc, call_se, put_mc, put_se)
