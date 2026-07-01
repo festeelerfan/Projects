@@ -1,4 +1,5 @@
 from src.pricing import black_scholes, delta, gamma, vega, theta, rho
+from src.mc import mc_euro
 
 def test_hull_example():
     call, put = black_scholes(S=42, t=0, T=0.5, K=40, r=0.1, q=0, sigma=0.2)
@@ -31,3 +32,9 @@ def test_rho_hull_example():
     call_rho, put_rho = rho(S=42, t=0, T=0.5, K=40, r=0.1, q=0, sigma=0.2)
     assert abs(call_rho - 0.1398) < 0.01
     assert abs(put_rho - (-0.0504)) < 0.01
+
+def test_mc_agrees_with_bs():
+    call_bs, put_bs = black_scholes(S=42, t=0, T=0.5, K=40, r=0.1, q=0, sigma=0.2)
+    call_mc, call_se, put_mc, put_se = mc_euro(S=42, t=0, T=0.5, K=40, r=0.1, q=0, sigma=0.2, seed=14727)
+    assert abs(call_mc - call_bs) < 3 * call_se
+    assert abs(put_mc - put_bs) < 3 * put_se
